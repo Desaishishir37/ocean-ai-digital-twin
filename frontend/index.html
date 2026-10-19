@@ -4,16 +4,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ocean-AI: 3D Subsurface Ocean Digital Twin</title>
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Three.js + OrbitControls -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- Leaflet CSS & JS for high-performance 2D Geospatial Map -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- Tailwind CSS (Local Offline with CDN Fallback) -->
+  <script src="/vendor/tailwind.js"></script>
+  <script>window.tailwind || document.write('<script src="https://cdn.tailwindcss.com"><\/script>')</script>
+
+  <!-- Three.js + OrbitControls (Local Offline with CDN Fallback) -->
+  <script src="/vendor/three.min.js"></script>
+  <script>window.THREE || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>')</script>
+  <script src="/vendor/OrbitControls.js"></script>
+  <script>window.THREE?.OrbitControls || document.write('<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"><\/script>')</script>
+
+  <!-- Chart.js (Local Offline with CDN Fallback) -->
+  <script src="/vendor/chart.umd.min.js"></script>
+  <script>window.Chart || document.write('<script src="https://cdn.jsdelivr.net/npm/chart.js"><\/script>')</script>
+
+  <!-- Leaflet CSS & JS for high-performance 2D Geospatial Map (Local Offline with CDN Fallback) -->
+  <link rel="stylesheet" href="/vendor/leaflet.css" onerror="this.onerror=null;this.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';" />
+  <script src="/vendor/leaflet.js"></script>
+  <script>window.L || document.write('<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"><\/script>')</script>
   <style>
     body { background-color: #050d1a; color: #e2e8f0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     .glass-card { background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(56, 189, 248, 0.15); }
@@ -1670,6 +1678,17 @@
         fetchTransect();
       }
     }
+
+    // Auto-switch tab if requested in URL query (e.g. ?tab=whatif)
+    window.addEventListener('DOMContentLoaded', () => {
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const requestedTab = urlParams.get('tab');
+        if (requestedTab) {
+          setTimeout(() => switchTab(requestedTab), 400);
+        }
+      } catch (e) {}
+    });
 
     // ==========================================
     // 2D LEAFLET GEOSPATIAL MAP ENGINE (APPLE MAPS & GOOGLE MAPS DESIGN)

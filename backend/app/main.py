@@ -33,6 +33,9 @@ frontend_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__fi
 
 if os.path.exists(frontend_dir):
     app.mount("/static", StaticFiles(directory=frontend_dir), name="static")
+    vendor_dir = os.path.join(frontend_dir, "static", "vendor")
+    if os.path.exists(vendor_dir):
+        app.mount("/vendor", StaticFiles(directory=vendor_dir), name="vendor")
 
 @app.api_route("/", methods=["GET", "HEAD"])
 def serve_index():
